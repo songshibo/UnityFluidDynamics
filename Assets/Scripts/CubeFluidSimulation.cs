@@ -64,17 +64,17 @@ public class CubeFluidSimulation : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
-            AddDensity(8, 14, 3, 100.0f);
+            AddDensity(8, 14, 3, 120.0f);
 
-            AddVelocity(8, 14, 3, 0.0f, -2.0f, 3.0f);
+            AddVelocity(8, 14, 3, 0f, -3f, 6.0f);
         }
 
         if (Input.GetMouseButton(0))
         {
             float angleVertical = Mathf.Deg2Rad * vAngleSlider.value;
             float angleHorizontal = Mathf.Deg2Rad * hAngleSlider.value;
-            AddDensity(8, 8, 8, Random.Range(80f, 120f));
-            AddVelocity(8, 8, 8, Mathf.Cos(angleVertical) * Mathf.Cos(angleHorizontal) * vel_scale,
+            AddDensity(N / 2, N / 2, N / 2, Random.Range(80f, 120f));
+            AddVelocity(N / 2, N / 2, N / 2, Mathf.Cos(angleVertical) * Mathf.Cos(angleHorizontal) * vel_scale,
                                 Mathf.Cos(angleVertical) * Mathf.Sin(angleHorizontal) * vel_scale,
                                  Mathf.Sin(angleVertical) * vel_scale);
         }
@@ -273,12 +273,12 @@ public class CubeFluidSimulation : MonoBehaviour
                     u0 = 1.0f - u1;
 
                     // the index to read d0[]
-                    int i0i = Mathf.Clamp((int)i0, 0, N * N * N);
-                    int i1i = Mathf.Clamp((int)i1, 0, N * N * N);
-                    int j0i = Mathf.Clamp((int)j0, 0, N * N * N);
-                    int j1i = Mathf.Clamp((int)j1, 0, N * N * N);
-                    int k0i = Mathf.Clamp((int)k0, 0, N * N * N);
-                    int k1i = Mathf.Clamp((int)k1, 0, N * N * N);
+                    int i0i = Mathf.Clamp((int)i0, 0, N * N * N - 1);
+                    int i1i = Mathf.Clamp((int)i1, 0, N * N * N - 1);
+                    int j0i = Mathf.Clamp((int)j0, 0, N * N * N - 1);
+                    int j1i = Mathf.Clamp((int)j1, 0, N * N * N - 1);
+                    int k0i = Mathf.Clamp((int)k0, 0, N * N * N - 1);
+                    int k1i = Mathf.Clamp((int)k1, 0, N * N * N - 1);
 
                     d[IX(i, j, k)] =
                         s0 * (t0 * (u0 * d0[IX(i0i, j0i, k0i)]
