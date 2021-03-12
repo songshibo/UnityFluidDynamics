@@ -80,13 +80,13 @@ public class FluidSimulation : MonoBehaviour
             // * Simulatie gravity
             // AddVelocity((int)coords.x, (int)coords.y, 0.0f, -velocityScale);
             
-            float densityAmount = Random.Range(100.0f, 200.0f);
+            float densityAmount = Random.Range(150.0f, 250.0f);
 
             AddDensity((int)coords.x, (int)coords.y, densityAmount);
-            AddDensity((int)coords.x+1, (int)coords.y, densityAmount/2);
-            AddDensity((int)coords.x-1, (int)coords.y, densityAmount/2);
-            AddDensity((int)coords.x, (int)coords.y+1, densityAmount/2);
-            AddDensity((int)coords.x, (int)coords.y-1, densityAmount/2);
+            AddDensity((int)coords.x+1, (int)coords.y, densityAmount);
+            AddDensity((int)coords.x-1, (int)coords.y, densityAmount);
+            AddDensity((int)coords.x, (int)coords.y+1, densityAmount);
+            AddDensity((int)coords.x, (int)coords.y-1, densityAmount);
 
             float angle = Mathf.Deg2Rad * angleSlider.value;
             AddVelocity((int)coords.x, (int)coords.y, Mathf.Cos(angle) * velocityScale, Mathf.Sin(angle) * velocityScale);
