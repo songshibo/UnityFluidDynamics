@@ -40,8 +40,10 @@ public class CubeFluidSimulation : MonoBehaviour
     {
         N += 1; // add boundary
         texture = new Texture3D(N, N, N, TextureFormat.RGBA32, true);
-        texture.wrapMode = TextureWrapMode.Clamp;// in case that the edge color will show on the oppsite side
+        texture.wrapMode = TextureWrapMode.Repeat;// in case that the edge color will show on the oppsite side
         GetComponent<Renderer>().material.SetTexture("_Volume", texture);
+        Camera.main.transform.GetComponent<SmokeRenderer>().material.SetTexture("VolumeMap", texture);
+        Camera.main.transform.GetComponent<SmokeRenderer>().material.SetTexture("_Volume", texture);
 
         preD = new float[N * N * N];
         density = new float[N * N * N];
@@ -54,14 +56,14 @@ public class CubeFluidSimulation : MonoBehaviour
         colorArray = new Color[N * N * N];
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, Vector3.one * 2);
-    }
-
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            string path = "Assets/frame.asset";
+            UnityEditor.AssetDatabase.CreateAsset(texture, path);
+        }
+
         if (Input.GetMouseButton(1))
         {
             AddDensity(8, 14, 3, 120.0f);
