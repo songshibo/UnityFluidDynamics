@@ -30,6 +30,13 @@
       "dependencies": {},
       "url": "https://packages.unity.cn"
     },
+    "com.unity.mathematics": {
+      "version": "1.1.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.cn"
+    },
     "com.unity.recorder": {
       "version": "2.5.4",
       "depth": 0,
