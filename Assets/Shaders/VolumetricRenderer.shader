@@ -9,9 +9,11 @@
 
     #include "UnityCG.cginc"
 
-    #define ITERATIONS 150
+    #define ITERATIONS 256
 
     sampler3D _Volume;
+    float3 boundsMin;
+    float3 boundsMax;
 
     struct Ray
     {
@@ -50,7 +52,8 @@
 
     float3 get_uv(float3 p)
     {
-        return (p + 0.5);
+        return p + 0.5;
+        // return (p - boundsMin) / (boundsMax - boundsMin);
     }
 
     struct a2v
@@ -83,12 +86,19 @@
         ray.origin = UNITY_MATRIX_IT_MV[3].xyz;// object space camera pos
         ray.dir = normalize(i.objectPos - ray.origin);
 
+        // ray.origin = _WorldSpaceCameraPos;
+        // ray.dir = normalize(i.worldPos - ray.origin);
+
         AABB aabb;
-        aabb.vmin = float3(-0.5, -0.5, -0.5);
+        aabb.vmin = float3(-0.5,-0.5,-0.5);
         aabb.vmax = float3(0.5, 0.5, 0.5);
         float tnear;
         float tfar;
         intersect(ray, aabb, tnear, tfar);
+
+        // float2 hit = rayBoxIntersect(_Bmin, _Bmax, ray.origin, 1.0/ray.dir);
+        tnear = max(0, tnear);
+        tfar = max(0, tfar);
 
         // tnear = max(0.0, tnear); //tnear < 0 means it's at the back side of camera, should be discard
 

@@ -22,7 +22,7 @@ public class CubeFluidSimulation : MonoBehaviour
 
     [Space]
     [SerializeField]
-    [Range(0, 0.5f)]
+    [Range(0, 1f)]
     float fadeAmount = 0.05f;
 
     Texture3D texture;
@@ -36,14 +36,15 @@ public class CubeFluidSimulation : MonoBehaviour
     float[] preVz;
     Color[] colorArray;
 
+    Material volumeMat;
+
     void Start()
     {
         N += 1; // add boundary
         texture = new Texture3D(N, N, N, TextureFormat.RGBA32, true);
         texture.wrapMode = TextureWrapMode.Repeat;// in case that the edge color will show on the oppsite side
-        GetComponent<Renderer>().material.SetTexture("_Volume", texture);
-        Camera.main.transform.GetComponent<SmokeRenderer>().material.SetTexture("VolumeMap", texture);
-        Camera.main.transform.GetComponent<SmokeRenderer>().material.SetTexture("_Volume", texture);
+        volumeMat = GetComponent<Renderer>().material;
+        volumeMat.SetTexture("_Volume", texture);
 
         preD = new float[N * N * N];
         density = new float[N * N * N];
@@ -56,8 +57,17 @@ public class CubeFluidSimulation : MonoBehaviour
         colorArray = new Color[N * N * N];
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, transform.localScale);
+    }
+
     void Update()
     {
+        volumeMat.SetVector("boundsMin", transform.position - transform.localScale / 2f);
+        volumeMat.SetVector("boundsMax", transform.position + transform.localScale / 2f);
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             string path = "Assets/frame.asset";
@@ -66,7 +76,7 @@ public class CubeFluidSimulation : MonoBehaviour
 
         if (Input.GetMouseButton(1))
         {
-            AddDensity(8, 14, 3, 120.0f);
+            AddDensity(8, 14, 3, 0.5f);
 
             AddVelocity(8, 14, 3, 0f, -3f, 6.0f);
         }
@@ -75,7 +85,7 @@ public class CubeFluidSimulation : MonoBehaviour
         {
             float angleVertical = Mathf.Deg2Rad * vAngleSlider.value;
             float angleHorizontal = Mathf.Deg2Rad * hAngleSlider.value;
-            AddDensity(N / 2, N / 2, N / 2, Random.Range(80f, 120f));
+            AddDensity(N / 2, N / 2, N / 2, Random.Range(0.2f, 0.5f));
             AddVelocity(N / 2, N / 2, N / 2, Mathf.Cos(angleVertical) * Mathf.Cos(angleHorizontal) * vel_scale,
                                 Mathf.Cos(angleVertical) * Mathf.Sin(angleHorizontal) * vel_scale,
                                  Mathf.Sin(angleVertical) * vel_scale);
@@ -319,13 +329,17 @@ public class CubeFluidSimulation : MonoBehaviour
 
     void Render()
     {
+        // float maxValue = 0;
+        // float minValue = float.MaxValue;
         for (int k = 1; k < N - 1; k++)
         {
             for (int j = 1; j < N - 1; j++)
             {
                 for (int i = 1; i < N - 1; i++)
                 {
-                    float v = density[IX(i, j, k)] / 255.0f;
+                    float v = density[IX(i, j, k)];
+                    // maxValue = v > maxValue ? v : maxValue;
+                    // minValue = v < minValue ? v : minValue;
                     colorArray[IX(i, j, k)] = Color.white * v;
                 }
             }
@@ -338,7 +352,7 @@ public class CubeFluidSimulation : MonoBehaviour
     {
         for (int i = 0; i < density.Length; i++)
         {
-            density[i] = Mathf.Clamp(density[i] - fadeAmount, 0.0f, 255.0f);
+            density[i] = Mathf.Clamp(density[i] * fadeAmount, 0.0f, 1.0f);
         }
     }
 }

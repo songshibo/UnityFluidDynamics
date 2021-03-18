@@ -14,6 +14,8 @@ public class SmokeRenderer : MonoBehaviour
 
     public float step = 0.1f;
 
+    public Vector4 phaseParams;
+
     float2 rayBoxIntersect(float3 boundsMin, float3 boundsMax, float3 rayOrigin, float3 invRaydir)
     {
         float3 t0 = (boundsMin - rayOrigin) * invRaydir;
@@ -49,14 +51,17 @@ public class SmokeRenderer : MonoBehaviour
         Gizmos.color = Color.red;
         float dstTravelled = 0;
 
+        // float density = 0;
         while (dstTravelled < hit.y - hit.x)
         {
             float3 rayPos = entry + dir * dstTravelled;
             Gizmos.DrawWireSphere(rayPos, 0.01f);
             float3 uvw = (rayPos - boundsMin) / size;
+            // Color c = tex3d.GetPixelBilinear(uvw.x, uvw.y, uvw.z);
             Gizmos.DrawRay(boundsMin, uvw);
             dstTravelled += step;
         }
+        // Debug.Log(density);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(domain.position, domain.localScale);
@@ -65,8 +70,11 @@ public class SmokeRenderer : MonoBehaviour
     [ImageEffectOpaque]
     private void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
-        material.SetVector("boundsMin", domain.position - domain.localScale / 2);
-        material.SetVector("boundsMax", domain.position + domain.localScale / 2);
+        material.SetVector("phaseParams", phaseParams);
+        material.SetTexture("VolumeTex", tex3d);
+        material.SetTexture("_Volume", tex3d);
+        // material.SetVector("boundsMin", domain.position - domain.localScale / 2);
+        // material.SetVector("boundsMax", domain.position + domain.localScale / 2);
         Graphics.Blit(src, dest, material);
     }
 }

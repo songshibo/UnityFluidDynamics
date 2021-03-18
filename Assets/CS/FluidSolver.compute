@@ -1,0 +1,29 @@
+﻿#pragma kernel DiffuseVolocity
+#pragma kernel SetBoundary
+
+#include "./Util.cginc"
+
+#define numthread3D 8
+RWTexture3D<float4> x; // Vx, Vy, Vz, Density
+RWTexture3D<float4> x0; // preVx, preVy, preVz, preDensity
+
+int N; // texture dimension
+float a;
+float cRecip;
+
+[numthreads(numthread3D,numthread3D,numthread3D)]
+void DiffuseVolocity (uint3 id : SV_DispatchThreadID)
+{
+    if(InRange3D(id, 1, N-1))
+    {
+    }
+}
+
+[numthreads(numthread3D, numthread3D, 1)]
+void SetBoundary(uint3 id : SV_DispatchThreadID)
+{
+    if(InRange2D(id.xy, 1, N-1))
+    {
+
+    }
+}
