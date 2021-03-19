@@ -21,5 +21,5 @@ I modified the volumetric cloud shader (removing detailed noise, height gradient
 
 the result is shown below
 
-![2D](./Result/Volumetric.gif)
+![Volumetric](./Result/Volumetric.gif)
 
