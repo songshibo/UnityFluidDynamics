@@ -1272,6 +1272,7 @@ MonoBehaviour:
   visc: 0.001
   vel_scale: 8
   fadeAmount: 0.99
+  volumeMat: {fileID: 2100000, guid: 2019ffff105e3964a9daec61fa19339a, type: 2}
 --- !u!23 &1405922240
 MeshRenderer:
   m_ObjectHideFlags: 0

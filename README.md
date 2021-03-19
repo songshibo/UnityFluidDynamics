@@ -11,5 +11,15 @@
 ## Future work
 
 - Accelerate the simulation with ComputeShader or Burst
-- Better shading (like Volumetric Cloud Shading etc.)
+- ~~Better shading (like Volumetric Cloud Shading etc.)~~
+
+## Volumetric Cloud Rendering
+
+Add in a post-processing volumetric rendering shader for 3D simulation result.
+
+I modified the volumetric cloud shader (removing detailed noise, height gradient etc.)
+
+the result is shown below
+
+![2D](./Result/Volumetric.gif)
 

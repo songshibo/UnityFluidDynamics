@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _Volume("Volume", 3D) = ""
+        NoiseTex("Volume", 3D) = ""
     }
 
     CGINCLUDE
@@ -11,7 +11,7 @@
 
     #define ITERATIONS 256
 
-    sampler3D _Volume;
+    sampler3D NoiseTex;
     float3 boundsMin;
     float3 boundsMax;
 
@@ -115,7 +115,7 @@
         for (int iter = 0; iter < ITERATIONS; iter++)
         {
             float3 uv = get_uv(p);
-            float v = tex3D(_Volume, uv).r;
+            float v = tex3D(NoiseTex, uv).r;
 
             dst.a = (1.0 - dst.a) * v + dst.a;
             p += ds;

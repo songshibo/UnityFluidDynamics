@@ -36,15 +36,15 @@ public class CubeFluidSimulation : MonoBehaviour
     float[] preVz;
     Color[] colorArray;
 
-    Material volumeMat;
+    public Material volumeMat;
 
     void Start()
     {
         N += 1; // add boundary
         texture = new Texture3D(N, N, N, TextureFormat.RGBA32, true);
         texture.wrapMode = TextureWrapMode.Repeat;// in case that the edge color will show on the oppsite side
-        volumeMat = GetComponent<Renderer>().material;
-        volumeMat.SetTexture("_Volume", texture);
+        // volumeMat = GetComponent<Renderer>().material;
+        volumeMat.SetTexture("NoiseTex", texture);
 
         preD = new float[N * N * N];
         density = new float[N * N * N];
